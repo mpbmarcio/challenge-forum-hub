@@ -26,4 +26,10 @@ public class Usuario {
     private List<Topico> topicos;
     @OneToMany(mappedBy = "autor")
     private List<Resposta> respostas;
+
+    public Usuario(String nome, String email, String senhaCriptografada) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senhaCriptografada;
+    }
 }

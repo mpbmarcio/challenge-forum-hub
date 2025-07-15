@@ -31,4 +31,13 @@ public class Topico {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    public Topico(String titulo, String mensagem, LocalDateTime dataInc, Status status, Usuario autor, Curso curso) {
+        this.titulo = titulo;
+        this.mensagem = mensagem;
+        this.dataInc = dataInc;
+        this.status = status;
+        this.autor = autor;
+        this.curso = curso;
+    }
 }
