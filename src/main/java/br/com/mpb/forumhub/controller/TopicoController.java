@@ -74,4 +74,13 @@ public class TopicoController {
 
         return ResponseEntity.ok(new TopicoResponseDTO(topico));
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        topicoService.excluir(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

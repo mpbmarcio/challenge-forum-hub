@@ -15,7 +15,9 @@ import br.com.mpb.forumhub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -114,6 +116,15 @@ public class TopicoService {
     }
 
     public Topico buscarTopico(Long id) {
-        return topicoRepository.getReferenceById(id);
+        return topicoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico não encontrado"));
+    }
+
+    public void excluir(Long id) {
+        topicoRepository.findById(id)
+                .ifPresentOrElse(
+                        topicoRepository::delete,
+                        () -> { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico não encontrado"); }
+                );
     }
 }
