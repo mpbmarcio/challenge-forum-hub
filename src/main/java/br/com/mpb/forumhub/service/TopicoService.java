@@ -13,9 +13,12 @@ import br.com.mpb.forumhub.repository.CursoRepository;
 import br.com.mpb.forumhub.repository.TopicoRepository;
 import br.com.mpb.forumhub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,23 +31,6 @@ public class TopicoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private CursoRepository cursoRepository;
-
-    public List<TopicoResponseDTO> listar() {
-        return topicoRepository.findAll().stream()
-                .map(t -> new TopicoResponseDTO(
-                        t.getId(),
-                        t.getTitulo(),
-                        t.getMensagem(),
-                        t.getStatus(),
-                        t.getDataInc(),
-                        new UsuarioResponseDTO(
-                                t.getAutor().getId(),
-                                t.getAutor().getNome(),
-                                t.getAutor().getEmail()),
-                        new CursoResponseDTO(
-                                t.getCurso().getId(),
-                                t.getCurso().getNome()))).toList();
-    }
 
     public Topico cadastrar(TopicoRequestDTO dados) {
         System.out.println("DTO recebido: " + dados);
@@ -66,6 +52,27 @@ public class TopicoService {
         return topicoRepository.save(topico);
     }
 
+    public Page<TopicoResponseDTO> listar(Pageable pageable) {
+        return topicoRepository.findAll(pageable)
+                .map(t -> new TopicoResponseDTO(
+                        t.getId(),
+                        t.getTitulo(),
+                        t.getMensagem(),
+                        t.getStatus(),
+                        t.getDataInc(),
+                        new UsuarioResponseDTO(
+                                t.getAutor().getId(),
+                                t.getAutor().getNome(),
+                                t.getAutor().getEmail()),
+                        new CursoResponseDTO(
+                                t.getCurso().getId(),
+                                t.getCurso().getNome())));
+    }
+
+    public List<TopicoResponseDTO> listarTop10OrderByDataIncAsc() {
+        return topicoRepository.findTop10ByOrderByDataIncAsc();
+    }
+
     public TopicoResponseDTO listarId(Long id) {
         Optional<Topico> topico = topicoRepository.findById(id);
 
@@ -85,5 +92,24 @@ public class TopicoService {
                             topico.get().getCurso().getNome()));
         }
         return null;
+    }
+
+    public Page<TopicoResponseDTO> buscarPorCursoEAno(String curso, int ano, Pageable pageable) {
+        return topicoRepository.buscarPorCursoEAno(curso, ano, pageable)
+                .map(t ->
+                        new TopicoResponseDTO(
+                            t.getId(),
+                            t.getTitulo(),
+                            t.getMensagem(),
+                            t.getStatus(),
+                            t.getDataInc(),
+                            new UsuarioResponseDTO(
+                                    t.getAutor().getId(),
+                                    t.getAutor().getNome(),
+                                    t.getAutor().getEmail()),
+                                    new CursoResponseDTO(
+                                            t.getCurso().getId(),
+                                            t.getCurso().getNome())
+                ));
     }
 }
