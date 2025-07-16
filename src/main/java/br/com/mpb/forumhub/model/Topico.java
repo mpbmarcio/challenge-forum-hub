@@ -1,7 +1,6 @@
 package br.com.mpb.forumhub.model;
 
 import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
-import br.com.mpb.forumhub.dto.response.TopicoResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -33,6 +33,9 @@ public class Topico {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    @OneToMany(mappedBy = "topico", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Resposta> respostas;
 
     public Topico(String titulo, String mensagem, LocalDateTime dataInc, Status status, Usuario autor, Curso curso) {
         this.titulo = titulo;
