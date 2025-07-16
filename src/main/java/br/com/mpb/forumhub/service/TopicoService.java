@@ -112,4 +112,8 @@ public class TopicoService {
                                             t.getCurso().getNome())
                 ));
     }
+
+    public Topico buscarTopico(Long id) {
+        return topicoRepository.getReferenceById(id);
+    }
 }

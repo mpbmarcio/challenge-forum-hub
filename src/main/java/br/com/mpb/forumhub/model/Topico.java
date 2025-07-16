@@ -1,5 +1,7 @@
 package br.com.mpb.forumhub.model;
 
+import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
+import br.com.mpb.forumhub.dto.response.TopicoResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -39,5 +41,14 @@ public class Topico {
         this.status = status;
         this.autor = autor;
         this.curso = curso;
+    }
+
+    public void atualizar(TopicoRequestDTO dados) {
+        if (dados.titulo() != null) {
+            this.titulo = dados.titulo();
+        }
+        if (dados.mensagem() != null) {
+            this.mensagem = dados.mensagem();
+        }
     }
 }

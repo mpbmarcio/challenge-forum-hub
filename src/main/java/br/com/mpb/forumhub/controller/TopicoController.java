@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
 import br.com.mpb.forumhub.dto.response.TopicoResponseDTO;
 import br.com.mpb.forumhub.model.Topico;
 import br.com.mpb.forumhub.service.TopicoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,5 +64,14 @@ public class TopicoController {
         return ResponseEntity
                 .created(uri)
                 .body(new TopicoRequestDTO(topico));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TopicoResponseDTO> atualizar(@RequestBody TopicoRequestDTO dados, @PathVariable Long id) {
+        Topico topico = topicoService.buscarTopico(id);
+        topico.atualizar(dados);
+
+        return ResponseEntity.ok(new TopicoResponseDTO(topico));
     }
 }
