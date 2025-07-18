@@ -3,8 +3,11 @@ package br.com.mpb.forumhub.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,13 +23,18 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http.csrf(csrf ->csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS))
+                .build();
+
+        /*http
                 .cors().and()
                 .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Permite todas as requisições
+                        .anyRequest().permitAll() // Permite todas as requisições (Testes iniciais)
                 );
-        return http.build();
+        return http.build();*/
     }
 
     @Bean
@@ -46,5 +54,8 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 }
