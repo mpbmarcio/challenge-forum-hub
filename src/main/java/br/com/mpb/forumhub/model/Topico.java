@@ -1,5 +1,6 @@
 package br.com.mpb.forumhub.model;
 
+import br.com.mpb.forumhub.dto.request.AtualizarRequestStatusDTO;
 import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,7 +37,8 @@ public class Topico {
     private Curso curso;
 
     @OneToMany(mappedBy = "topico", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Resposta> respostas;
+    private List<Resposta> respostas = new ArrayList<>();
+
 
     public Topico(String titulo, String mensagem, LocalDateTime dataInc, Status status, Usuario autor, Curso curso) {
         this.titulo = titulo;
@@ -52,6 +55,12 @@ public class Topico {
         }
         if (dados.mensagem() != null) {
             this.mensagem = dados.mensagem();
+        }
+    }
+
+    public void atualizarStatus(AtualizarRequestStatusDTO dados) {
+        if (dados.status() != null) {
+            this.status = dados.status();
         }
     }
 }
