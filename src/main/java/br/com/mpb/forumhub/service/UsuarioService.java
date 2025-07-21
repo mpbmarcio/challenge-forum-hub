@@ -5,8 +5,10 @@ import br.com.mpb.forumhub.dto.response.UsuarioResponseDTO;
 import br.com.mpb.forumhub.model.Usuario;
 import br.com.mpb.forumhub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,5 +32,13 @@ public class UsuarioService {
 
         Usuario usuario = new Usuario(dados.nome(), dados.email(), senhaCriptografada);
         return usuarioRepository.save(usuario);
+    }
+
+    public void excluir(Long id) {
+        usuarioRepository.findById(id)
+                .ifPresentOrElse(
+                        usuarioRepository::delete,
+                        () -> { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"); }
+                );
     }
 }
