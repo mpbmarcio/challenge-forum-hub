@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.CursoRequestDTO;
 import br.com.mpb.forumhub.dto.response.CursoResponseDTO;
 import br.com.mpb.forumhub.model.Curso;
 import br.com.mpb.forumhub.service.CursoService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,13 @@ public class CursoController {
         return ResponseEntity
                 .created(uri)
                 .body(new CursoRequestDTO(curso));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        cursoService.excluir(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
