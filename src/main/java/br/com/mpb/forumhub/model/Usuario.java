@@ -38,6 +38,7 @@ public class Usuario implements UserDetails {
         this.nome = nome;
         this.email = email;
         this.senha = senhaCriptografada;
+        this.role = Role.ROLE_USER;
     }
 
     @Override
