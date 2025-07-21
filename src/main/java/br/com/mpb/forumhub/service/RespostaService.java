@@ -26,11 +26,8 @@ public class RespostaService {
     @Autowired
     private RespostaRepository respostaRepository;
 
-    public List<RespostaResponseDTO> listar(Long topicoId) {
-        Topico topico = topicoRepository.findById(topicoId)
-                .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
-
-        return respostaRepository.findByTopico(topico).stream()
+    public List<RespostaResponseDTO> listar() {
+        return respostaRepository.findAll().stream()
                 .map(r -> new RespostaResponseDTO(
                         r.getId(),
                         r.getMensagem(),
@@ -43,8 +40,6 @@ public class RespostaService {
     }
 
     public RespostaResponseDTO cadastrar(RespostaRequestDTO dto) {
-        System.out.println("DTO recebido: topicoId = " + dto.topicoId());
-
         Topico topico = topicoRepository.findById(dto.topicoId())
                 .orElseThrow(() -> new RuntimeException("Tópico não encontrado"));
 
