@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/respostas")
 public class RespostaController {
 
     @Autowired
@@ -22,12 +22,7 @@ public class RespostaController {
     @Autowired
     private RespostaService respostaService;
 
-    @GetMapping("/topicos/{id}/respostas")
-    public List<RespostaResponseDTO> listarId(@PathVariable Long id) {
-        return respostaService.listar(id);
-    }
-
-    @PostMapping("/respostas")
+    @PostMapping
     public ResponseEntity<RespostaResponseDTO> cadastrar(@RequestBody @Valid RespostaRequestDTO dados) {
         RespostaResponseDTO respostaDTO = respostaService.cadastrar(dados);
 
@@ -38,18 +33,8 @@ public class RespostaController {
                 .body(respostaDTO);
     }
 
-    @PostMapping("/topicos/{id}/respostas")
-    public ResponseEntity<RespostaResponseDTO> responderTopico(@PathVariable Long id, @RequestBody @Valid RespostaRequestDTO dados) {
-        RespostaRequestDTO dadosComTopico = new RespostaRequestDTO(
-                null,
-                dados.mensagem(),
-                id,
-                dados.autorId()
-        );
-
-        RespostaResponseDTO respostaDTO = respostaService.cadastrar(dadosComTopico);
-
-        URI uri = URI.create("/topicos/" + id + "/respostas/" + respostaDTO.id());
-        return ResponseEntity.created(uri).body(respostaDTO);
+    @GetMapping
+    public List<RespostaResponseDTO> listarId() {
+        return respostaService.listar();
     }
 }
