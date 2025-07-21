@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.UsuarioRequestDTO;
 import br.com.mpb.forumhub.dto.response.UsuarioResponseDTO;
 import br.com.mpb.forumhub.model.Usuario;
 import br.com.mpb.forumhub.service.UsuarioService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,13 @@ public class UsuarioController {
                         usuario.getId(),
                         usuario.getNome(),
                         usuario.getEmail()));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        usuarioService.excluir(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
