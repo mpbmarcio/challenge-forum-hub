@@ -1,8 +1,9 @@
 package br.com.mpb.forumhub.service;
 
-import br.com.mpb.forumhub.dto.request.CursoRequestDTO;
+import br.com.mpb.forumhub.dto.request.AtualizarRequestStatusDTO;
 import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
 import br.com.mpb.forumhub.dto.response.CursoResponseDTO;
+import br.com.mpb.forumhub.dto.response.RespostaResponseDTO;
 import br.com.mpb.forumhub.dto.response.TopicoResponseDTO;
 import br.com.mpb.forumhub.dto.response.UsuarioResponseDTO;
 import br.com.mpb.forumhub.model.Curso;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +35,6 @@ public class TopicoService {
     private CursoRepository cursoRepository;
 
     public Topico cadastrar(TopicoRequestDTO dados) {
-        System.out.println("DTO recebido: " + dados);
-
         Usuario autor = usuarioRepository.findById(dados.autor().id())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -68,7 +66,11 @@ public class TopicoService {
                                 t.getAutor().getEmail()),
                         new CursoResponseDTO(
                                 t.getCurso().getId(),
-                                t.getCurso().getNome())));
+                                t.getCurso().getNome()),
+                        t.getRespostas()
+                                .stream()
+                                .map(RespostaResponseDTO::new)
+                                .toList()));
     }
 
     public List<TopicoResponseDTO> listarTop10OrderByDataIncAsc() {
@@ -91,7 +93,11 @@ public class TopicoService {
                             topico.get().getAutor().getEmail()),
                     new CursoResponseDTO(
                             topico.get().getCurso().getId(),
-                            topico.get().getCurso().getNome()));
+                            topico.get().getCurso().getNome()),
+                    topico.get().getRespostas()
+                            .stream()
+                            .map(RespostaResponseDTO::new)
+                            .toList());
         }
         return null;
     }
@@ -111,8 +117,11 @@ public class TopicoService {
                                     t.getAutor().getEmail()),
                                     new CursoResponseDTO(
                                             t.getCurso().getId(),
-                                            t.getCurso().getNome())
-                ));
+                                            t.getCurso().getNome()),
+                                t.getRespostas()
+                                        .stream()
+                                        .map(RespostaResponseDTO::new)
+                                        .toList()));
     }
 
     public Topico buscarTopico(Long id) {
@@ -126,5 +135,14 @@ public class TopicoService {
                         topicoRepository::delete,
                         () -> { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tópico não encontrado"); }
                 );
+    }
+
+    public Topico atualizarStatus(Long id, AtualizarRequestStatusDTO dados) {
+        Topico topico = buscarTopico(id);
+        topico.atualizarStatus(dados);
+
+        System.out.println(topico.getStatus());
+        return topicoRepository.save(topico);
+
     }
 }
