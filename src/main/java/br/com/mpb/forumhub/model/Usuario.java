@@ -31,6 +31,7 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "autor")
     private List<Resposta> respostas;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public Usuario(String nome, String email, String senhaCriptografada) {
