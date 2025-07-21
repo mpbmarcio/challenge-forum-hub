@@ -13,22 +13,6 @@ public record TopicoRequestDTO(Long id,
                                @NotBlank(message = "A mensagem é obrigatória!") String mensagem,
                                @NotNull Status status,
                                @NotNull LocalDateTime dataInc,
-                               UsuarioRequestDTO autor,
+                               UsuarioIdRequestDTO autor,
                                @NotNull(message = "O curso é obrigatório!") CursoResponseDTO curso) {
-
-    public TopicoRequestDTO(Topico topico) {
-        this(topico.getId(),
-             topico.getTitulo(),
-             topico.getMensagem(),
-             topico.getStatus(),
-             topico.getDataInc(),
-             new UsuarioRequestDTO(
-                     topico.getAutor().getId(),
-                     topico.getAutor().getNome(),
-                     topico.getAutor().getEmail(),
-                     topico.getAutor().getSenha()),
-             new CursoResponseDTO(
-                     topico.getCurso().getId(),
-                     topico.getCurso().getNome()));
-    }
 }
