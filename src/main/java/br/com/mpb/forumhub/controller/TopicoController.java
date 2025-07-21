@@ -1,8 +1,12 @@
 package br.com.mpb.forumhub.controller;
 
+import br.com.mpb.forumhub.dto.request.AtualizarRequestStatusDTO;
+import br.com.mpb.forumhub.dto.request.RespostaRequestDTO;
 import br.com.mpb.forumhub.dto.request.TopicoRequestDTO;
+import br.com.mpb.forumhub.dto.response.RespostaResponseDTO;
 import br.com.mpb.forumhub.dto.response.TopicoResponseDTO;
 import br.com.mpb.forumhub.model.Topico;
+import br.com.mpb.forumhub.service.RespostaService;
 import br.com.mpb.forumhub.service.TopicoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,6 +26,9 @@ public class TopicoController {
 
     @Autowired
     private TopicoService topicoService;
+
+    @Autowired
+    private RespostaService respostaService;
 
     @GetMapping
     public ResponseEntity<Page<TopicoResponseDTO>> listar(@PageableDefault(size = 10) Pageable pageable) {
@@ -56,14 +63,16 @@ public class TopicoController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoRequestDTO> cadastrar(@RequestBody @Valid TopicoRequestDTO dados) {
+    public ResponseEntity<TopicoResponseDTO> cadastrar(@RequestBody @Valid TopicoRequestDTO dados) {
+
+    System.out.println("Chegou no controller cadastro");
         Topico topico =  topicoService.cadastrar(dados);
 
         URI uri = URI.create("/topicos/" + topico.getId());
 
         return ResponseEntity
                 .created(uri)
-                .body(new TopicoRequestDTO(topico));
+                .body(new TopicoResponseDTO(topico));
     }
 
     @PutMapping("/{id}")
@@ -75,6 +84,13 @@ public class TopicoController {
         return ResponseEntity.ok(new TopicoResponseDTO(topico));
     }
 
+    @PutMapping("{id}/status")
+    @Transactional
+    public ResponseEntity<TopicoResponseDTO> atualizarStatus(@RequestBody AtualizarRequestStatusDTO dados, @PathVariable Long id) {
+        Topico topico = topicoService.atualizarStatus(id, dados);
+        return ResponseEntity.ok(new TopicoResponseDTO(topico));
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
@@ -83,4 +99,18 @@ public class TopicoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/respostas")
+    public ResponseEntity<RespostaResponseDTO> responderTopico(@PathVariable Long id, @RequestBody @Valid RespostaRequestDTO dados) {
+        RespostaRequestDTO dadosComTopico = new RespostaRequestDTO(
+                null,
+                dados.mensagem(),
+                id,
+                dados.autorId()
+        );
+
+        RespostaResponseDTO respostaDTO = respostaService.cadastrar(dadosComTopico);
+
+        URI uri = URI.create("/topicos/" + id + "/respostas/" + respostaDTO.id());
+        return ResponseEntity.created(uri).body(respostaDTO);
+    }
 }
