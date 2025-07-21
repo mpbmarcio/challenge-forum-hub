@@ -2,6 +2,8 @@ package br.com.mpb.forumhub.controller;
 
 import br.com.mpb.forumhub.dto.request.DadosTokenJWT;
 import br.com.mpb.forumhub.dto.request.UsuarioAutenticacao;
+import br.com.mpb.forumhub.dto.response.LoginResponseDTO;
+import br.com.mpb.forumhub.dto.response.UsuarioResponseDTO;
 import br.com.mpb.forumhub.model.Usuario;
 import br.com.mpb.forumhub.service.TokenService;
 import jakarta.validation.Valid;
@@ -26,12 +28,21 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid UsuarioAutenticacao dados) {
+    public ResponseEntity<LoginResponseDTO> efetuarLogin(@RequestBody @Valid UsuarioAutenticacao dados) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+        String tokenJWT = tokenService.gerarToken(usuarioLogado);
 
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        var usuarioDTO = new UsuarioResponseDTO(
+                usuarioLogado.getId(),
+                usuarioLogado.getNome(),
+                usuarioLogado.getEmail()
+        );
+
+        var dto = new LoginResponseDTO(tokenJWT, usuarioDTO);
+
+        return ResponseEntity.ok(dto);
     }
 }
