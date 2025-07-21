@@ -31,6 +31,8 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "autor")
     private List<Resposta> respostas;
 
+    private Role role;
+
     public Usuario(String nome, String email, String senhaCriptografada) {
         this.nome = nome;
         this.email = email;
@@ -39,7 +41,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
