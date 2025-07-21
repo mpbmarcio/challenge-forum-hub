@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.model.Status;
 import br.com.mpb.forumhub.model.Topico;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TopicoResponseDTO(Long id,
                                 String titulo,
@@ -11,7 +12,8 @@ public record TopicoResponseDTO(Long id,
                                 Status status,
                                 LocalDateTime dataInc,
                                 UsuarioResponseDTO autor,
-                                CursoResponseDTO curso) {
+                                CursoResponseDTO curso,
+                                List<RespostaResponseDTO> respostas) {
     public TopicoResponseDTO(Topico topico) {
         this(topico.getId(),
                 topico.getTitulo(),
@@ -24,7 +26,10 @@ public record TopicoResponseDTO(Long id,
                         topico.getAutor().getEmail()),
                         new CursoResponseDTO(
                                 topico.getCurso().getId(),
-                                topico.getCurso().getNome())
-                );
+                                topico.getCurso().getNome()),
+                topico.getRespostas()
+                        .stream()
+                        .map(RespostaResponseDTO::new)
+                        .toList());
     }
 }
