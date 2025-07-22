@@ -34,7 +34,7 @@ public class RespostaController {
     }
 
     @GetMapping
-    public List<RespostaResponseDTO> listarId() {
+    public List<RespostaResponseDTO> listar() {
         return respostaService.listar();
     }
 }
