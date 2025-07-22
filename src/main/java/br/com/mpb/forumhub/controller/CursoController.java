@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.CursoRequestDTO;
 import br.com.mpb.forumhub.dto.response.CursoResponseDTO;
 import br.com.mpb.forumhub.model.Curso;
 import br.com.mpb.forumhub.service.CursoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CursoController {
 
     @Autowired

@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.RespostaRequestDTO;
 import br.com.mpb.forumhub.dto.response.RespostaResponseDTO;
 import br.com.mpb.forumhub.repository.TopicoRepository;
 import br.com.mpb.forumhub.service.RespostaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/respostas")
+@SecurityRequirement(name = "bearer-key")
 public class RespostaController {
 
     @Autowired

@@ -4,6 +4,7 @@ import br.com.mpb.forumhub.dto.request.UsuarioRequestDTO;
 import br.com.mpb.forumhub.dto.response.UsuarioResponseDTO;
 import br.com.mpb.forumhub.model.Usuario;
 import br.com.mpb.forumhub.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
 
     @Autowired

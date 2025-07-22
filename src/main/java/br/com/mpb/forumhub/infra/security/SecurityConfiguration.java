@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                         sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("swagger-ui.html", "swagger-ui/**","v3/api-docs/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/topicos", "/topicos/*", "/cursos", "/usuarios", "/respostas").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/topicos", "/topicos/*/respostas", "/respostas").hasAnyRole("USER", "ADMIN")
