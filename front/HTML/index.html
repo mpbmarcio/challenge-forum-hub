@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ForumHub - Tópicos</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>ForumHub</h2>
+    <ul>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="index.html">🏠 Tópicos</a></li>
+      <li><a href="new-topic.html">✍️ Novo Tópico</a></li>
+      <li><a href="cursos.html">📚 Cursos</a></li>
+      <li><a href="usuarios.html">👥 Usuários</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2 class="section-title">Tópicos Recentes</h2>
+    <a href="new-topic.html" class="back-link">+ Criar novo tópico</a>
+    <ul id="listaTopicos"></ul>
+    <div id="paginacao">
+      <button onclick="navegarPagina(-1)" id="btnAnterior" disabled>◀️ Anterior</button>
+      <span id="paginaInfo">Página 1</span>
+      <button onclick="navegarPagina(1)" id="btnProxima">Próxima ▶️</button>
+    </div>
+  </div>
+
+  <script src="/js/index.js"></script>
+</body>
+</html>

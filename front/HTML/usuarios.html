@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ForumHub - Usuários</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>ForumHub</h2>
+        <ul>
+            <li><a href="login.html">🔐 Login</a></li>
+            <li><a href="index.html">🏠 Tópicos</a></li>
+            <li><a href="new-topic.html">✍️ Novo Tópico</a></li>
+            <li><a href="cursos.html">📚 Cursos</a></li>
+            <li><a href="usuarios.html">👥 Usuários</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Cadastro de Usuário</h2>
+        <form id="formUsuario">
+            <label for="nomeUsuario">Nome</label>
+            <input type="text" id="nomeUsuario" name="nome" required />
+
+            <label for="emailUsuario">Email</label>
+            <input type="email" id="emailUsuario" name="email" required />
+
+            <label for="senhaUsuario">Senha</label>
+            <input type="password" id="senhaUsuario" name="senha" required minlength="6" maxlength="10" />
+
+            <button type="submit">Cadastrar Usuário</button>
+        </form>
+
+        <h2 class="section-title">Usuários Cadastrados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th style="text-align: center;">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaUsuarios"></tbody>
+        </table>
+    </div>
+
+    <script src="/js/usuarios.js"></script>
+</body>
+
+</html>

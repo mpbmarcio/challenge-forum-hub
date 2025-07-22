@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Detalhes do Tópico - ForumHub</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>ForumHub</h2>
+    <ul>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="index.html">🏠 Tópicos</a></li>
+      <li><a href="new-topic.html">✍️ Novo Tópico</a></li>
+      <li><a href="cursos.html">📚 Cursos</a></li>
+      <li><a href="usuarios.html">👥 Usuários</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2 class="section-title" id="tituloTopico"></h2>
+    <div class="mensagem-topico" id="mensagemTopico"></div>
+
+    <table>
+      <tbody>
+        <tr>
+          <th>Curso</th>
+          <td id="cursoTopico"></td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td id="statusTopico"></td>
+        </tr>
+        <tr>
+          <th>Autor</th>
+          <td id="autorTopico"></td>
+        </tr>
+        <tr>
+          <th>Data</th>
+          <td id="dataTopico"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="section-title">Respostas</h3>
+    <ul id="listaRespostas"></ul>
+
+    <div id="formContainer">
+      <h3 class="section-title">Enviar uma resposta</h3>
+      <form id="formResposta">
+        <label for="mensagemResposta">Resposta</label>
+        <textarea id="mensagemResposta" required></textarea>
+        <button type="submit">Responder</button>
+      </form>
+      <p id="respostaErro"></p>
+    </div>
+  </div>
+
+  <script src="/js/topic.js"></script>
+</body>
+
+</html>

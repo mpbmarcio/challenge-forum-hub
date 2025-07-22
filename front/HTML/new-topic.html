@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Novo Tópico - ForumHub</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>ForumHub</h2>
+    <ul>
+      <li><a href="login.html">🔐 Login</a></li>
+      <li><a href="index.html">🏠 Tópicos</a></li>
+      <li><a href="new-topic.html">✍️ Novo Tópico</a></li>
+      <li><a href="cursos.html">📚 Cursos</a></li>
+      <li><a href="usuarios.html">👥 Usuários</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h2 class="section-title">Criar Novo Tópico</h2>
+    <form id="formTopico">
+      <label for="titulo">Título</label>
+      <input type="text" id="titulo" required />
+
+      <label for="mensagem">Mensagem</label>
+      <textarea id="mensagem" required></textarea>
+
+      <label for="cursoSelect">Curso</label>
+      <select id="cursoSelect" required>
+        <option value="">Selecione um curso</option>
+        <!-- opções vêm do JS -->
+      </select>
+
+      <button type="submit">Criar</button>
+    </form>
+    <p id="mensagemErro"></p>
+  </div>
+
+  <script src="/js/new-topic.js"></script>
+</body>
+
+</html>
