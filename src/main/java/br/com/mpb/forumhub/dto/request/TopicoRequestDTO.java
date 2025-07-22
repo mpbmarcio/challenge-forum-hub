@@ -2,7 +2,6 @@ package br.com.mpb.forumhub.dto.request;
 
 import br.com.mpb.forumhub.dto.response.CursoResponseDTO;
 import br.com.mpb.forumhub.model.Status;
-import br.com.mpb.forumhub.model.Topico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
