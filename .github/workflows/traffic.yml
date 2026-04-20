@@ -1,0 +1,47 @@
+# .github/workflows/traffic.yml
+name: Save GitHub Traffic Data
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'   # roda todo domingo à meia-noite
+  workflow_dispatch:       # permite rodar manualmente
+
+jobs:
+  save-traffic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Get clone traffic
+        uses: octokit/request-action@v2.x
+        id: clones
+        with:
+          route: GET /repos/${{ github.repository }}/traffic/clones
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get view traffic
+        uses: octokit/request-action@v2.x
+        id: views
+        with:
+          route: GET /repos/${{ github.repository }}/traffic/views
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Save traffic data
+        run: |
+          echo "Date: $(date)" >> traffic-log.txt
+          echo "Clones:" >> traffic-log.txt
+          echo "${{ steps.clones.outputs.data }}" >> traffic-log.txt
+          echo "Views:" >> traffic-log.txt
+          echo "${{ steps.views.outputs.data }}" >> traffic-log.txt
+          echo "" >> traffic-log.txt
+
+      - name: Commit traffic log
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add traffic-log.txt
+          git commit -m "Update traffic log"
+          git push
