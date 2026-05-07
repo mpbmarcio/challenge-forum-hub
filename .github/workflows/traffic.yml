@@ -13,18 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Get clone traffic
-        uses: octokit/request-action@v2.x
+        uses: octokit/request-action@v3.x
         id: clones
         with:
           route: GET /repos/${{ github.repository }}/traffic/clones
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
 
       - name: Get view traffic
-        uses: octokit/request-action@v2.x
+        uses: octokit/request-action@v3.x
         id: views
         with:
           route: GET /repos/${{ github.repository }}/traffic/views
