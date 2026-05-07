@@ -2,7 +2,7 @@ name: Save GitHub Traffic Data
 
 on:
   schedule:
-    - cron: '0 0 * * 0'
+    - cron: '0 0 * * 0'   # roda todo domingo à meia-noite
   workflow_dispatch:
 
 permissions:
@@ -33,17 +33,19 @@ jobs:
 
       - name: Save traffic data
         run: |
-          echo "Date: $(date)" >> traffic-log.txt
-          echo "Clones:" >> traffic-log.txt
-          echo '${{ steps.clones.outputs.data }}' | jq . >> traffic-log.txt
-          echo "Views:" >> traffic-log.txt
-          echo '${{ steps.views.outputs.data }}' | jq . >> traffic-log.txt
-          echo "" >> traffic-log.txt
+          FILE="traffic-$(date +'%Y-%m-%d').txt"
+          echo "Date: $(date)" >> $FILE
+          echo "Clones:" >> $FILE
+          echo '${{ steps.clones.outputs.data }}' | jq . >> $FILE
+          echo "Views:" >> $FILE
+          echo '${{ steps.views.outputs.data }}' | jq . >> $FILE
+          echo "" >> $FILE
 
       - name: Commit traffic log
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add traffic-log.txt
-          git commit -m "Update traffic log" || echo "No changes to commit"
-          git push origin HEAD:main
+          git add traffic-*.txt
+          git commit -m "Update traffic log for $(date +'%Y-%m-%d')" || echo "No changes to commit"
+          git checkout -B traffic-data
+          git push origin traffic-data
