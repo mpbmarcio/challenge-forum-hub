@@ -29,7 +29,7 @@ jobs:
         with:
           route: GET /repos/${{ github.repository }}/traffic/views
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
 
       - name: Save traffic data
         run: |
